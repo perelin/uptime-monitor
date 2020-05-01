@@ -29,7 +29,7 @@ func main() {
 	var basetime int64
 
 	cliParams := os.Args
- 
+
 	if len(cliParams) == 2 && cliParams[1] == "reset" {
 		basetime = setBasetime()
 	} else {
@@ -42,7 +42,7 @@ func main() {
 
 }
 
-func getBasetime() (int64) {
+func getBasetime() int64 {
 	basetime, err := readBasetime()
 	if err != nil {
 		fmt.Println(err)
@@ -56,7 +56,7 @@ func getUptime(basetime int64) int64 {
 	return uptime
 }
 
-func setBasetime() (int64) {
+func setBasetime() int64 {
 	nowUnix := time.Now().Unix()
 	nowString := strconv.FormatInt(nowUnix, 10)
 
@@ -118,7 +118,15 @@ func sendUptimeToCloudWatch(uptime float64) {
 	}
 
 	now := time.Now()
-	fmt.Println(now.Format("2006-01-02 15:04:05") + " - uptime send to cloud watch: " + strconv.Itoa(int(uptime)))
+
+	uptimeDuration, _ := time.ParseDuration(strconv.Itoa(int(uptime)) + "s")
+	fmt.Println(
+		now.Format("2006-01-02 15:04:05") +
+			" - uptime send to cloud watch: " +
+			strconv.Itoa(int(uptime)) +
+			" -> " +
+			uptimeDuration.String())
+
 }
 
 func getSystemUptimeSeconds() (int64, error) {
@@ -126,7 +134,7 @@ func getSystemUptimeSeconds() (int64, error) {
 	err := syscall.Sysinfo(&info)
 	if err != nil {
 		fmt.Println(err)
- 		return 0, err
- 	}
+		return 0, err
+	}
 	return info.Uptime, nil
 }

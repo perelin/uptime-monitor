@@ -4,11 +4,11 @@ Script used to send a relative uptime value of an AWS EC2 instance to AWS cloudw
 
 see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UsingAlarmActions.html
 
-## create the binary
+## create the binary (in docker cont)
 $ go build .
 
-## install binary
-$ mv ./uptime-monitor /usr/local/bin
+## install binary (in host)
+$ sudo mv ./uptime-monitor /usr/local/bin
 
 ## usage
 
